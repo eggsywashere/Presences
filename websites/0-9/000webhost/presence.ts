@@ -1,17 +1,17 @@
 const presence = new Presence({
     clientId: "840489095767261194"
   }),
-  browsingStamp = Math.floor(Date.now() / 1000);
+  browsingTimestamp = Math.floor(Date.now() / 1000);
 
 let title: HTMLElement, title2: HTMLElement, titleSite: HTMLElement;
 
 presence.on("UpdateData", async () => {
   const presenceData: PresenceData = {
       largeImageKey: "logo",
-      startTimestamp: browsingStamp
+      startTimestamp: browsingTimestamp
     },
     page = window.location.pathname,
-    buttons = await presence.getSetting("buttons");
+    buttons = await presence.getSetting<boolean>("buttons");
 
   titleSite = document.querySelector(
     "#nav-container > div > div.sidebar__header.flex.flex-col > a.sidebar-header__app-link.text-color-white.text-bold.disabled-link.sidebar-header__app-link--disabled > span"
@@ -82,8 +82,6 @@ presence.on("UpdateData", async () => {
   else if (page.endsWith("/backup"))
     presenceData.details = "Managing Backups For:";
 
-  if (!presenceData.details) {
-    presence.setTrayTitle();
-    presence.setActivity();
-  } else presence.setActivity(presenceData);
+  if (presenceData.details) presence.setActivity(presenceData);
+  else presence.setActivity();
 });
