@@ -25,7 +25,7 @@ jobs:
         id: changed_files
       - name: Write Changed Files (pull request)
         if: github.event_name == 'pull_request'
-        uses: DamianReeves/write-file-action@v1.0
+        uses: DamianReeves/write-file-action@v1.1
         with:
           path: file_changes.txt
           contents: |
